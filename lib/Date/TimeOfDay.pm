@@ -199,6 +199,16 @@ This is a simple module to represent time of day. Interface is modelled after
 L<DateTime>. Internal representation is currently float (number of seconds from
 midnight 00:00:00). Currently does not handle leap second nor time zone.
 
+TODO:
+
+ * set
+ * strftime
+ * comparison
+ * add DateTime + TimeOfDay
+ * add TimeOfDay + TimeOfDay
+ * convert to duration
+ * convert to another time zone
+
 
 =head1 METHODS
 
