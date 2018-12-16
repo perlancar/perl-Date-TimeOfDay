@@ -183,6 +183,11 @@ sub nanosecond {
     $nanosecond;
 }
 
+sub float {
+    my $self = shift;
+    $$self;
+}
+
 sub hms {
     my ($self, $sep) = @_;
 
