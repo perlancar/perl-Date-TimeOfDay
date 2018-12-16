@@ -84,6 +84,27 @@ sub from_float {
     return bless \$tod, $class;
 }
 
+sub from_hms {
+    my $class = shift;
+    my %args = @_;
+
+    my $tod;
+    if (defined $args{hms}) {
+        my $hms = delete $args{hms};
+        $hms =~ /\A([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})(\.[0-9]{1,9})?\z/
+            or die "Invalid hms '$hms', must be hh:mm:ss";
+        $tod = $class->new(
+            hour=>$1, minute=>$2, second=>$3,
+            nanosecond=>defined($4) ? $4*1e9 : 0);
+    } else {
+        die "Please specify 'hms'";
+    }
+
+    die "Unknown parameter(s): ".join(", ", sort keys %args) if keys %args;
+
+    $tod;
+}
+
 sub _now {
     require Time::Local;
 
@@ -231,6 +252,13 @@ TODO:
 =head1 METHODS
 
 =head2 new
+
+=head2 from_hms
+
+Example:
+
+ my $tod = Date::TimeOfDay->from_hms(hms => "23:59:59");
+ say $tod; # => "23:59:59"
 
 =head2 from_float
 
