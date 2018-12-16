@@ -10,7 +10,7 @@ use POSIX 'round';
 
 use overload (
     #fallback => 1,
-    #'<=>'    => '_compare_overload',
+    '<=>'    => '_compare_overload',
     #'cmp'    => '_string_compare_overload',
     q{""}    => 'stringify',
     bool     => sub {1},
@@ -206,8 +206,20 @@ sub strftime {
     # XXX
 }
 
+sub compare {
+    my $class = ref $_[0] ? undef : shift;
+    my ($tod1, $tod2) = @_;
+
+    unless ($tod1->can('float') && $tod2->can('float')) {
+        die "A Date::TimeOfDay object can only be compared to another ".
+            "Date::TimeOfDay object";
+    }
+    $tod1->float <=> $tod2->float;
+}
+
 sub _compare_overload {
-    # XXX
+    return undef unless defined $_[1];
+    return $_[2] ? -$_[0]->compare($_[1]) : $_[0]->compare($_[1]);
 }
 
 sub _string_compare_overload {
@@ -299,6 +311,12 @@ Example:
 =head2 stringify
 
 Is also invoked via overload of q("").
+
+=head2 compare
+
+Example:
+
+ $tod->compare($tod2); # -1 if $tod is less than $tod2, 0 if equal, 1 if greater than
 
 
 =head1 SEE ALSO
