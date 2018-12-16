@@ -26,7 +26,7 @@ sub new {
 
     my $tod = 0;
     if (defined $args{hour}) {
-        die "'hour' must be between an integer"
+        die "'hour' must be an integer"
             unless $args{hour} == int($args{hour});
         die "'hour' must be between 0 & 23"
             unless $args{hour} >= 0 && $args{hour} <= 23;
@@ -35,7 +35,7 @@ sub new {
         die "Please specify 'hour'";
     }
     if (defined $args{minute}) {
-        die "'minute' must be between an integer"
+        die "'minute' must be an integer"
             unless $args{minute} == int($args{minute});
         die "'minute' must be between 0 & 59"
             unless $args{minute} >= 0 && $args{minute} <= 59;
@@ -44,7 +44,7 @@ sub new {
         die "Please specify 'minute'";
     }
     if (defined $args{second}) {
-        die "'second' must be between an integer"
+        die "'second' must be an integer"
             unless $args{second} == int($args{second});
         die "'second' must be between 0 & 59"
             unless $args{second} >= 0 && $args{second} <= 59;
@@ -54,7 +54,7 @@ sub new {
     }
 
     if (defined $args{nanosecond}) {
-        die "'nanosecond' must be between an integer"
+        die "'nanosecond' must be an integer"
             unless $args{nanosecond} == int($args{nanosecond});
         die "'nanosecond' must be between 0 & 999_999_999"
             unless $args{nanosecond} >= 0 && $args{nanosecond} <= 999_999_999;
