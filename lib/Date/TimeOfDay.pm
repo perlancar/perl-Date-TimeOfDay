@@ -288,6 +288,8 @@ Example:
 
 =head2 nanosecond
 
+=head2 float
+
 =head2 hms
 
 =head2 (TODO) set
