@@ -24,6 +24,14 @@ subtest "new, hour, minute, second, nanosecond, hms, stringify" => sub {
     is($tod->hms, "23:59:59");
 };
 
+subtest from_float => sub {
+    dies_ok  { Date::TimeOfDay->from_float() } 'missing required param -> dies';
+    dies_ok  { Date::TimeOfDay->from_float(float=>-1) } 'invalid float -> dies 1';
+    dies_ok  { Date::TimeOfDay->from_float(float=>86400) } 'invalid float -> dies 2';
+    dies_ok  { Date::TimeOfDay->from_float(float=>1, foo=>2) } 'unknown param -> dies';
+    is(Date::TimeOfDay->from_float(float=>86399)->hms, "23:59:59");
+};
+
 subtest now_local => sub {
     my $tod = Date::TimeOfDay->now_local;
     ok 1;

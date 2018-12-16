@@ -66,6 +66,24 @@ sub new {
     return bless \$tod, $class;
 }
 
+sub from_float {
+    my $class = shift;
+    my %args = @_;
+
+    my $tod;
+    if (defined $args{float}) {
+        $tod = delete($args{float}) + 0;
+        die "'float' must be between 0-86400"
+            unless $tod >= 0 && $tod < 86400;
+    } else {
+        die "Please specify 'float'";
+    }
+
+    die "Unknown parameter(s): ".join(", ", sort keys %args) if keys %args;
+
+    return bless \$tod, $class;
+}
+
 sub _now {
     require Time::Local;
 
@@ -213,6 +231,13 @@ TODO:
 =head1 METHODS
 
 =head2 new
+
+=head2 from_float
+
+Example:
+
+ my $tod = Date::TimeOfDay->from_float(float => 86399);
+ say $tod; # => "23:59:59"
 
 =head2 now_local
 
