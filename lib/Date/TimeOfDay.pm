@@ -11,13 +11,14 @@ use POSIX 'round';
 use overload (
     #fallback => 1,
     '<=>'    => '_compare_overload',
-    #'cmp'    => '_string_compare_overload',
+    'cmp'    => '_string_compare_overload',
     q{""}    => 'stringify',
+    q{0+}    => 'float',
     bool     => sub {1},
     #'-'      => '_subtract_overload',
     #'+'      => '_add_overload',
-    #'eq'     => '_string_equals_overload',
-    #'ne'     => '_string_not_equals_overload',
+    'eq'     => '_string_equals_overload',
+    'ne'     => '_string_not_equals_overload',
 );
 
 sub new {
@@ -230,20 +231,23 @@ sub compare {
 }
 
 sub _compare_overload {
-    return undef unless defined $_[1];
-    return $_[2] ? -$_[0]->compare($_[1]) : $_[0]->compare($_[1]);
+    my ($tod1, $tod2, $flip) = @_;
+    ($flip ? -1:1) * (compare($tod1, $tod2));
 }
 
 sub _string_compare_overload {
-    # XXX
+    my ($tod1, $tod2, $flip) = @_;
+    ($flip ? -1:1) * ("$tod1" cmp "$tod2");
 }
 
 sub _string_equals_overload {
-    # XXX
+    my ($tod1, $tod2) = @_;
+    "$tod1" eq "$tod2";
 }
 
 sub _string_not_equals_overload {
-    # XXX
+    my ($tod1, $tod2) = @_;
+    "$tod1" ne "$tod2";
 }
 
 1;

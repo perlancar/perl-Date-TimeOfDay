@@ -28,6 +28,43 @@ subtest "new, hour, minute, second, nanosecond, hms, float, stringify" => sub {
     is($tod->stringify, "23:59:59.999999");
 };
 
+subtest "stringify, numify, boolean overload" => sub {
+    my $tod = Date::TimeOfDay->from_float(float=>86399);
+
+    is("$tod", "23:59:59");
+    #is(0+$tod, 86399); # XXX
+    ok(!!$tod);
+    ok(!!Date::TimeOfDay->from_hms(hms=>"0:0:0"));
+};
+
+subtest "compare, <=> overload" => sub {
+    my $tod1 = Date::TimeOfDay->from_float(float=>86399);
+    my $tod2 = Date::TimeOfDay->from_float(float=>86398);
+
+    is($tod1->compare($tod2), 1);
+    is($tod1->compare($tod1), 0);
+    is($tod2->compare($tod1), -1);
+
+    is(Date::TimeOfDay->compare($tod1, $tod2), 1);
+
+    is($tod1 <=> $tod2, 1);
+};
+
+subtest "cmp, eq, ne overload" => sub {
+    my $tod1 = Date::TimeOfDay->from_float(float=>86399);
+    my $tod2 = Date::TimeOfDay->from_float(float=>86398);
+
+    is($tod1 cmp $tod2, 1);
+    is($tod1 cmp $tod1, 0);
+    is($tod2 cmp $tod1, -1);
+
+    ok($tod1 eq $tod1);
+    ok(!($tod1 eq $tod2));
+
+    ok(!($tod1 ne $tod1));
+    ok($tod1 ne $tod2);
+};
+
 subtest from_hms => sub {
     dies_ok  { Date::TimeOfDay->from_() } 'missing required param -> dies';
     dies_ok  { Date::TimeOfDay->from_(hms=>"") } 'invalid hms -> dies 1';
