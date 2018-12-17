@@ -199,7 +199,19 @@ sub hms {
 
 sub stringify {
     my $self = shift;
-    $self->hms;
+
+    my ($hour, $minute, $second, $nanosecond) = $self->_elements;
+
+    if ($nanosecond) {
+        sprintf(
+            "%02d:%02d:%s%.11g",
+            $hour,
+            $minute,
+            $second < 10 ? "0" : "",
+            $second + $nanosecond/1e9);
+    } else {
+        sprintf("%02d:%02d:%02d", $hour, $minute, $second);
+    }
 }
 
 sub strftime {
@@ -259,7 +271,6 @@ TODO:
 
  * set
  * strftime
- * comparison
  * add DateTime + TimeOfDay
  * add TimeOfDay + TimeOfDay
  * convert to duration
@@ -303,6 +314,12 @@ Example:
 =head2 float
 
 =head2 hms
+
+Usage:
+
+ $tod->hms([ $sep ])
+
+Default separator is ":".
 
 =head2 (TODO) set
 

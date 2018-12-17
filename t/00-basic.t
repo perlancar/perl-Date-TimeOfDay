@@ -20,11 +20,12 @@ subtest "new, hour, minute, second, nanosecond, hms, float, stringify" => sub {
     is($tod->second, 59);
     is($tod->nanosecond, 999_999_000);
 
+    is($tod->hms, "23:59:59");
+    is($tod->hms("."), "23.59.59", "hms separator");
+
     is($tod->float, 86399.999999);
 
-    is($tod->stringify, "23:59:59");
-
-    is($tod->hms, "23:59:59");
+    is($tod->stringify, "23:59:59.999999");
 };
 
 subtest from_hms => sub {
