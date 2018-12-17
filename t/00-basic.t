@@ -71,6 +71,7 @@ subtest from_hms => sub {
     dies_ok  { Date::TimeOfDay->from_(hms=>"24:00:00") } 'invalid hms -> dies 2';
     dies_ok  { Date::TimeOfDay->from_(hms=>"00:00:00", foo=>2) } 'unknown param -> dies';
     is(Date::TimeOfDay->from_hms(hms=>"23:59:59")->hms, "23:59:59");
+    is(Date::TimeOfDay->from_hms(hms=>"3:59")->hms, "03:59:00");
 
     my $tod = Date::TimeOfDay->from_hms(hms=>"23:59:59.025");
     is($tod->hms, "23:59:59");

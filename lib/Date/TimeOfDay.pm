@@ -92,10 +92,11 @@ sub from_hms {
     my $tod;
     if (defined $args{hms}) {
         my $hms = delete $args{hms};
-        $hms =~ /\A([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})(\.[0-9]{1,9})?\z/
-            or die "Invalid hms '$hms', must be hh:mm:ss";
+        $hms =~ /\A([0-9]{1,2}):([0-9]{1,2})(?::([0-9]{1,2})(\.[0-9]{1,9})?)?\z/
+            or die "Invalid hms '$hms', must be hh:mm:ss or hh:mm";
         $tod = $class->new(
-            hour=>$1, minute=>$2, second=>$3,
+            hour=>$1, minute=>$2,
+            second => defined($3) ? $3 : 0,
             nanosecond=>defined($4) ? $4*1e9 : 0);
     } else {
         die "Please specify 'hms'";
